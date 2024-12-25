@@ -5,13 +5,13 @@ import { useState } from "react";
 export default function Exo() {
 
   // Exo 1.1
-  let age : number = 25;
+  const age : number = 25;
   console.log(age);
 
-  let username : string = "Alice";
+  const username : string = "Alice";
   console.log(username);
 
-  let isActive : boolean = true;
+  const isActive : boolean = true;
   console.log(isActive);
 
   let undefinedValue : undefined;
@@ -24,7 +24,7 @@ export default function Exo() {
   greet("Lorem")
 
   // Exo 1.3
-  let score = 100;
+  const score = 100;
   console.log(score+"5"); // Score devient un string et le résultat est 1005
 
   // Exo 2.1
@@ -55,7 +55,7 @@ export default function Exo() {
   printMessage("Un message")
 
   // Exo 3.1
-  let names : string[] = [];
+  const names : string[] = [];
   names.push("Alice");
   names.push("Bob");
   names.push("Charlie");
@@ -66,17 +66,25 @@ export default function Exo() {
   getNamesStart_A(names);
 
   // Exo 3.2
-  let user : {
+  type User = {
     id : number,
     name : string,
     isAdmin : boolean
-  }
-  const [isAdmin, setIsAdmin] = useState<boolean>();
+  };
+
   const [statut, setStatut] = useState<string>("user");
+  const [user, setUser] = useState<User>({
+    id: 1,
+    name: "Alice",
+    isAdmin: false,
+  });
 
   function toggleAdmin() {
-    setIsAdmin(prev => !prev);
-    setStatut(prev => (prev === "user" ? "admin" : "user"));
+    setUser(prevUser => {
+      const newIsAdmin = !prevUser.isAdmin; // Calcule la nouvelle valeur
+      setStatut(newIsAdmin ? "admin" : "user"); // Utilise la valeur calculée
+      return { ...prevUser, isAdmin: newIsAdmin }; // Retourne le nouvel objet utilisateur
+    });
   }
 
   // Exo 4.1
@@ -94,9 +102,9 @@ export default function Exo() {
   console.log(product);
 
   // Exo 4.2
-  let reduction : number = 20;
+  const reduction : number = 20;
   function applyDiscount(product : Product, reduction : number){
-    let finalPrice = product.price * (100 - reduction) / 100;
+    const finalPrice = product.price * (100 - reduction) / 100;
     console.log(`Prix final après réduction : ${finalPrice}`);
     return(finalPrice);
   }
@@ -106,7 +114,7 @@ export default function Exo() {
     <div>
       <p>EXO</p>
       <button onClick={() => toggleAdmin()}>Toggle Admin</button>
-      <p>{statut}</p>
+      <p>{user.name} is {statut}</p>
     </div>
   )
 }
