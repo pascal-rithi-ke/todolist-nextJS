@@ -81,9 +81,9 @@ export default function Exo() {
 
   function toggleAdmin() {
     setUser(prevUser => {
-      const newIsAdmin = !prevUser.isAdmin; // Calcule la nouvelle valeur
-      setStatut(newIsAdmin ? "admin" : "user"); // Utilise la valeur calculée
-      return { ...prevUser, isAdmin: newIsAdmin }; // Retourne le nouvel objet utilisateur
+      const newIsAdmin = !prevUser.isAdmin;
+      setStatut(newIsAdmin ? "admin" : "user");
+      return { ...prevUser, isAdmin: newIsAdmin };
     });
   }
 
