@@ -110,6 +110,64 @@ export default function Exo() {
   }
   applyDiscount(product, reduction);
 
+  // Exo 5.1
+  class Person {
+    name: string;
+    constructor(name: string) {
+      this.name = name;
+    }
+    greet(): string {
+      return `Bonjour, je m'appelle ${this.name}.`;
+    }
+  }
+  const person1 = new Person("Lorems2");
+  console.log(person1.greet()); 
+
+  // Exo 5.2
+  class Employee extends Person{
+    role : string;
+    constructor(name: string, role: string){
+      super(name)
+      this.role = role;
+    }
+    introduce(): string{
+      return `Bonjour, je m'appelle ${this.name} et je suis un ${this.role}.`;
+    }
+  }
+  const employee1 = new Employee("Bob", "manager");
+  console.log(employee1.introduce());
+
+  // Exo 6.1
+  function identity<Type>(args : Type): Type{
+    return args
+  }
+  console.log(identity("test"))
+  console.log(identity(13))
+
+  // Exo 6.2
+  class Storage<Type>{
+    private items: Type[] = [];
+
+    add(item : Type){
+      this.items.push(item);
+    }
+
+    getAll(): Type[]{
+      return this.items
+    }
+  }
+
+  const stringStorage = new Storage<string>();
+  stringStorage.add("Pomme");
+  stringStorage.add("Banane");
+  console.log(stringStorage.getAll());
+
+  const numberStorage = new Storage<number>();
+  numberStorage.add(5);
+  numberStorage.add(13);
+  console.log(numberStorage.getAll());
+
+
   return (
     <div>
       <p>EXO</p>
