@@ -1,5 +1,6 @@
 'use client'
 
+import axios from "axios";
 import { useState } from "react";
 
 export default function Exo() {
@@ -167,6 +168,49 @@ export default function Exo() {
   numberStorage.add(13);
   console.log(numberStorage.getAll());
 
+  // Exo 7.1
+  function parseJson(json: string): unknown {
+    try {
+      const parsed = JSON.parse(json);
+      console.log("Parsing réussi :", parsed);
+      return parsed;
+    } catch (error) {
+      console.error("Erreur de parsing :", error);
+      return undefined;
+    }
+  }
+  
+  // Test avec un JSON valide
+  const validJson = '{"name": "Alice"}';
+  console.log(parseJson(validJson));
+  
+  // Test avec un JSON invalide, génère une erreur
+  // const invalidJson = "{invalid json}";
+  // console.log(parseJson(invalidJson));
+
+  // Exo 7.2
+  interface UserApi {
+    name : string,
+    email : string,
+    phone : number,
+    company: {
+      name: string;
+    };
+  }
+  axios.get<UserApi[]>("https://jsonplaceholder.typicode.com/users")
+  .then(response => {
+    const users = response.data;
+    users.forEach(user => {
+      console.log(`Nom: ${user.name}`);
+      console.log(`Email: ${user.email}`);
+      console.log(`Téléphone: ${user.phone}`);
+      console.log(`Entreprise: ${user.company.name}`);
+      console.log('---');
+    });
+  })
+  .catch(error =>{
+    console.log(error);
+  });
 
   return (
     <div>
