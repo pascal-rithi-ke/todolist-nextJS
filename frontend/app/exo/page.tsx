@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function Exo() {
 
-  // Exo 1.1
+  // Exo 1.1 Types de base
   const age : number = 25;
   console.log(age);
 
@@ -18,7 +18,7 @@ export default function Exo() {
   let undefinedValue : undefined;
   console.log(undefinedValue);
 
-  // Exo 1.2
+  // Exo 1.2 Fonctions typées
   function greet(name:string){
     return(console.log("Bonjour "+name));
   }
@@ -28,7 +28,7 @@ export default function Exo() {
   const score = 100;
   console.log(score+"5"); // Score devient un string et le résultat est 1005
 
-  // Exo 2.1
+  // Exo 2.1 Types union
   let id : string | number;
   id = 5;
   console.log(id);
@@ -36,7 +36,7 @@ export default function Exo() {
   id = "cinq";
   console.log(id);
 
-  // Exo 2.2
+  // Exo 2.2  Définir des types personnalisés
   type UserID = string | number;
   let userId: UserID;
   
@@ -44,7 +44,7 @@ export default function Exo() {
   userId = "ABC123";
   console.log(userId);
 
-  // Exo 2.3
+  // Exo 2.3 Paramètres optionnels
   function printMessage(message?:string){
     if(message !== undefined){
       console.log(message);
@@ -55,7 +55,7 @@ export default function Exo() {
   printMessage();
   printMessage("Un message")
 
-  // Exo 3.1
+  // Exo 3.1 Tableaux typés
   const names : string[] = [];
   names.push("Alice");
   names.push("Bob");
@@ -66,7 +66,7 @@ export default function Exo() {
   }
   getNamesStart_A(names);
 
-  // Exo 3.2
+  // Exo 3.2 Objets complexes
   type User = {
     id : number,
     name : string,
@@ -88,7 +88,7 @@ export default function Exo() {
     });
   }
 
-  // Exo 4.1
+  // Exo 4.1 Définir une interface
   interface Product {
     id : number;
     name : string;
@@ -102,7 +102,7 @@ export default function Exo() {
   }
   console.log(product);
 
-  // Exo 4.2
+  // Exo 4.2 Utiliser des interfaces dans des fonctions
   const reduction : number = 20;
   function applyDiscount(product : Product, reduction : number){
     const finalPrice = product.price * (100 - reduction) / 100;
@@ -111,7 +111,7 @@ export default function Exo() {
   }
   applyDiscount(product, reduction);
 
-  // Exo 5.1
+  // Exo 5.1 Définir une classe
   class Person {
     name: string;
     constructor(name: string) {
@@ -124,7 +124,7 @@ export default function Exo() {
   const person1 = new Person("Lorems2");
   console.log(person1.greet()); 
 
-  // Exo 5.2
+  // Exo 5.2 Héritage
   class Employee extends Person{
     role : string;
     constructor(name: string, role: string){
@@ -138,14 +138,14 @@ export default function Exo() {
   const employee1 = new Employee("Bob", "manager");
   console.log(employee1.introduce());
 
-  // Exo 6.1
+  // Exo 6.1 Fonction générique
   function identity<Type>(args : Type): Type{
     return args
   }
   console.log(identity("test"))
   console.log(identity(13))
 
-  // Exo 6.2
+  // Exo 6.2 Classe générique
   class Storage<Type>{
     private items: Type[] = [];
 
@@ -168,7 +168,7 @@ export default function Exo() {
   numberStorage.add(13);
   console.log(numberStorage.getAll());
 
-  // Exo 7.1
+  // Exo 7.1 Gestion des erreurs
   function parseJson(json: string): unknown {
     try {
       const parsed = JSON.parse(json);
@@ -188,7 +188,7 @@ export default function Exo() {
   // const invalidJson = "{invalid json}";
   // console.log(parseJson(invalidJson));
 
-  // Exo 7.2
+  // Exo 7.2 Typage sur une api externe
   interface UserApi {
     name : string,
     email : string,
@@ -211,6 +211,75 @@ export default function Exo() {
   .catch(error =>{
     console.log(error);
   });
+
+  // Exo 8.1 Mapped types
+  interface Product {
+    id: number;
+    name: string;
+    price: number;
+  }
+  type ReadonlyProduct = Readonly<Product>;
+  const readonlyProduct : ReadonlyProduct = {id: 1, name: "Banane", price: 2};
+  // readonlyProduct.price = 10; /* Erreur IDE */
+
+  // Exo 8.2 Utility types
+  type PartialProduct = Partial<Product>;
+  function updateProduct(product: Product, updates: PartialProduct): Product {
+    return { ...product, ...updates }; // Fusionne l'objet existant avec les mises à jour
+  }
+  
+  const defaultProduct: Product = { id: 1, name: "Banane", price: 2 };
+  const updatedProduct = updateProduct(defaultProduct, { price: 3, name: "Pomme" });
+  
+  console.log(updatedProduct); // { id: 1, name: "Pomme", price: 3 }
+
+  // Exo 9 Enums
+  enum Role {
+    Admin = "ADMIN",
+    User = "USER",
+    Guest = "GUEST"
+  }
+  
+  function assignRole(role: Role) {
+    console.log(`Rôle assigné : ${role}`);
+  }
+  
+  assignRole(Role.Admin); // Rôle assigné : ADMIN
+  assignRole(Role.User);  // Rôle assigné : USER
+
+  // Exo 10 Discriminated Unions
+  interface Dog {
+    type: "dog";
+    bark(): void;
+  }
+  
+  interface Cat {
+    type: "cat";
+    meow(): void;
+  }
+  
+  type Animal = Dog | Cat;
+  
+  function makeSound(animal: Animal) {
+    if (animal.type === "dog") {
+      animal.bark();
+    } else if (animal.type === "cat") {
+      animal.meow();
+    }
+  }  
+
+  const dog: Dog = {
+    type: "dog",
+    bark: () => console.log("Woof!"),
+  };
+  
+  const cat: Cat = {
+    type: "cat",
+    meow: () => console.log("Miou!"),
+  };
+  
+  makeSound(dog); // Affiche "Woof!"
+  makeSound(cat); // Affiche "Meow!"
 
   return (
     <div>
